@@ -59,16 +59,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const fetchUser = async () => {
-    try {
-      const userData = await authService.getMe();
-      setUser(userData);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //const fetchUser = async () => {
+  //  try {
+  //    const userData = await authService.getMe();
+  //    setUser(userData);
+  //  } catch (error) {
+  //    console.error('Error fetching user:', error);
+  //  } finally {
+  //    setLoading(false);
+  //  }
+  //};
 
   const login = async (email: string, password: string) => {
     const response = await authService.login(email, password);
