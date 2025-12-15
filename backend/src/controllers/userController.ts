@@ -36,7 +36,7 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const createUser = async (req: AuthRequest, res: Response) => {
   try {
-    const { email, password, name, role } = req.body;
+    const { email, password, name, role } = (req as any).body;
 
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password, and name are required' });
@@ -76,7 +76,7 @@ export const createUser = async (req: AuthRequest, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { email, name, role, password } = req.body;
+    const { email, name, role, password } = (req as any).body;
 
     const user = await User.findByPk(id);
 

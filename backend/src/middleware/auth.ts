@@ -1,5 +1,4 @@
-import { Response, NextFunction } from 'express';
-import type { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import jwt from 'jsonwebtoken';
 import { UserRole } from '../models/User';
@@ -14,7 +13,7 @@ export interface AuthRequest extends Request {
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = (req as any).headers.authorization?.split(' ')[1];
     //console.log("token", token);
 
     if (!token) {
