@@ -158,7 +158,7 @@ export const authPublicService = {
 
 export const publicInvoiceService = {
   getInvoice: async (invoiceId: number) => {
-    const response = await axios.get(`${API_URL?.replace('/api', '') || 'http://localhost:5000'}/pay/invoice/${invoiceId}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/pay/invoice/${invoiceId}`);
     return response.data;
   },
   createCheckoutSession: async (invoiceId: number) => {
