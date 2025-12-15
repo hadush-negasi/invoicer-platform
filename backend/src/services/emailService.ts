@@ -1,17 +1,9 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export interface InvoiceEmailData {
   clientName: string;
@@ -89,15 +81,14 @@ export const sendInvoiceEmail = async (data: InvoiceEmailData): Promise<void> =>
     </html>
   `;
 
-  const mailOptions = {
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: data.clientEmail,
-    subject: `Invoice ${data.invoiceNumber} - Payment Required`,
-    html: htmlTemplate,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'Invoicing App <no-reply@yourdomain.com>',
+      to: data.clientEmail,
+      subject: `Invoice ${data.invoiceNumber} - Payment Required`,
+      html: htmlTemplate,
+    });
+
     console.log(`Invoice email sent to ${data.clientEmail}`);
   } catch (error) {
     console.error('Error sending invoice email:', error);
@@ -155,20 +146,17 @@ export const sendPasswordResetEmail = async (data: ResetPasswordEmailData): Prom
     </html>
   `;
 
-  const mailOptions = {
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: data.userEmail,
-    subject: 'Password Reset Request',
-    html: htmlTemplate,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'Invoicing App <no-reply@yourdomain.com>',
+      to: data.userEmail,
+      subject: 'Password Reset Request',
+      html: htmlTemplate,
+    });
+
     console.log(`Password reset email sent to ${data.userEmail}`);
   } catch (error) {
     console.error('Error sending password reset email:', error);
     throw error;
   }
 };
-
-
