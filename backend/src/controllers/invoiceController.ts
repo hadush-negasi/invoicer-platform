@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import Invoice, { InvoiceStatus } from '../models/Invoice';
 import Client from '../models/Client';
+import { customAlphabet } from 'nanoid';
 
+// Generate 6-digit numeric invoice ID
+const nanoid = customAlphabet('0123456789', 6);
 const generateInvoiceNumber = async (): Promise<string> => {
   const year = new Date().getFullYear();
-  const count = await Invoice.count();
-  return `INV-${year}-${String(count + 1).padStart(5, '0')}`;
+  const randomId = nanoid(); // e.g., '482930'
+  return `INV-${year}-${randomId}`;
 };
 
 export const getAllInvoices = async (req: Request, res: Response) => {
