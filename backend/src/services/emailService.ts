@@ -152,6 +152,9 @@ export const sendPasswordResetEmail = async (data: ResetPasswordEmailData): Prom
       to: data.userEmail,
       subject: 'Password Reset Request',
       html: htmlTemplate,
+      headers: {
+        'X-Resend-Disable-Tracking': 'true', // disables click tracking
+      },
     });
 
     console.log(`Password reset email sent to ${data.userEmail}`);
